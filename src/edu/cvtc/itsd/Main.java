@@ -29,8 +29,13 @@ public class Main {
   private static final int ERROR_INSERT_FAILED = 4;
 
   // Timeouts. Note the units.
-  private static final long TIMEOUT_PANEL_MS = 10 * 1000;
+  private static final long TIMEOUT_PANEL_MS = 3000;
   private static final int TIMEOUT_STATEMENT_S = 5;
+
+  private static final long TIMEOUT_DONE_MS = 3000;
+
+  private static JButton doneButton;
+
 
   // Internal classes ///////////////////////////////////////////////////////////
   // InputFilter manages user input to the card number field.
@@ -76,7 +81,11 @@ public class Main {
   // Revert to the main panel after a button press ////////////////////////////
   public static class Handler implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
-      Main.doneProcessing();
+      if (evt.getSource() == buttonAcknowledge) {
+        Main.doneProcessing();
+      } else if (evt.getSource() == doneButton) {
+        Main.doneProcessing();
+      }
     }
   }
 
@@ -333,6 +342,14 @@ public class Main {
     labelMeta.setPreferredSize(new Dimension(640, 32));
     labelMeta.setMaximumSize(new Dimension(640, 32));
     frame.getContentPane().add(labelMeta, BorderLayout.PAGE_END);
+
+    // Module 5 ticket: Add done button
+    doneButton = new JButton("Done");
+    doneButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    doneButton.addActionListener(new Update());
+    doneButton.setForeground(Color.green);
+    panelMain.add(doneButton);
+
 
     // Connect to DB //////////////////////////////////////////////////////////
     try {
