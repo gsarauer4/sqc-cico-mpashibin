@@ -59,7 +59,7 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 2. Enter 00000000 into the field and click Update.
 
 ## Expected results
-* Should display "Developer" for the user name.
+* Should display "Developer" for the username.
 
 
 # Module 4: Constrain input to card number length
@@ -73,3 +73,13 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should not allow input of less than 8 characters in step 2 and should "beep" in response to trying to Update.
 * Should not allow input of more than 8 characters in step 4 and should "beep" in response to trying.
+
+# Module 5: Add "Done" button to scan and immediately timeout and allow the next person to scan their card.
+
+## Test steps
+1. Build and run CiCo.
+2. Enter 00000000 into the field and click Done.
+3. Wait for status panel to close.
+
+## Expected results
+* Should immediately timeout and return to main panel.
