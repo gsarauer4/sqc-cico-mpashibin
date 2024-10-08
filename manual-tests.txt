@@ -61,4 +61,11 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
+# Module 6: Check monochromatic color scheme
 
+## Test steps
+1. Build and run CiCo.
+2. Verify the color scheme is monochromatic, using neutral colors, while being professional.
+
+## Expected results
+* UI elements are clearly distinguishable, neutal and monochromatic.
