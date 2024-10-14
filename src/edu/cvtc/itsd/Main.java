@@ -35,16 +35,18 @@ public class Main {
   // Internal classes ///////////////////////////////////////////////////////////
   // InputFilter manages user input to the card number field.
   private static class InputFilter extends DocumentFilter {
-    private static final int MAX_LENGTH = 8;
+    private static final int REQUIRED_LENGTH = 8;
 
     @Override
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      Document doc = fb.getDocument();
+      String currentText = doc.getText(0, doc.getLength());
+
+      if (currentText.length() + stringToAdd.length() <= REQUIRED_LENGTH) {
         super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
+      } else {
         Toolkit.getDefaultToolkit().beep();
       }
     }
@@ -53,10 +55,12 @@ public class Main {
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      Document doc = fb.getDocument();
+      String currentText = doc.getText(0, doc.getLength());
+
+      if (currentText.length() - lengthToDelete + stringToAdd.length() <= REQUIRED_LENGTH) {
         super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
+      } else {
         Toolkit.getDefaultToolkit().beep();
       }
     }
@@ -71,9 +75,9 @@ public class Main {
 
   // Revert to the main panel after a button press ////////////////////////////
   public static class Handler implements ActionListener {
-    public void actionPerformed(ActionEvent evt) {
-      Main.doneProcessing();
-    }
+      public void actionPerformed(ActionEvent evt) {
+          Main.doneProcessing();
+      }
   }
 
   // Revert to the main panel after time has passed ///////////////////////////
@@ -209,7 +213,7 @@ public class Main {
   }
 
   // Display name and new status //////////////////////////////////////////////
-  // Module 3 tickets: Display user name and new status. Doesn't require a
+  // Module 3 tickets: Display username and new status. Doesn't require a
   // method and can be done where this is called instead.
   private static void updateStateLabels(String name, boolean isCheckedInNow) {
     labelUser.setText(name);
@@ -288,6 +292,16 @@ public class Main {
     labelState.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     labelState.setForeground(Color.white);
     panelStatus.add(labelState);
+
+    JButton doneButton = new JButton("Done");
+    doneButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    doneButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        doneProcessing();
+      }
+    });
+    panelStatus.add(doneButton);
 
     panelStatus.add(Box.createVerticalGlue());
 
